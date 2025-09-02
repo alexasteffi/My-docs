@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Breaking News Ticker</title>
+
+  <style>
+    :root{
+      --bg: #0b2144;           /* header background */
+      --accent: #7a00f5;       /* primary accent */
+      --accent-2:#00d084;      /* secondary accent */
+      --text: #ffffff;         /* main text color */
+      --muted: #c8d2e3;        /* secondary text */
+      --height: 56px;          /* ticker height */
+      --speed: 22s;            /* scroll speed (lower = faster) */
+      --shadow: 0 4px 16px rgba(0,0,0,.2);
+    }
+
+    /* Optional: make the banner stick to the top */
+    .ticker-sticky { position: sticky; top: 0; z-index: 999; }
+
+    body{ margin:0; font-family: "Segoe UI", Roboto, Arial, sans-serif; }
+
+    .ticker-wrap{
+      background:
+        linear-gradient(90deg, rgba(122,0,245,.15), rgba(0,208,132,.15)) , var(--bg);
+      color: var(--text);
+      box-shadow: var(--shadow);
+      border-bottom: 2px solid var(--accent);
+    }
+
+    .ticker{
+      display:flex; align-items:center; gap:16px;
+      height: var(--height);
+      overflow:hidden; white-space:nowrap;
+      padding: 0 12px;
+    }
+
+    .ticker__badge{
+      display:flex; align-items:center; gap:8px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color:#fff; padding:6px 10px; border-radius:999px;
+      font-weight:600; letter-spacing:.2px; flex:0 0 auto;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.15);
+    }
+    .ticker__dot{ width:8px; height:8px; border-radius:50%; background:#fff; box-shadow:0 0 8px #fff; }
+
+    .ticker__viewport{ position:relative; flex:1 1 auto; overflow:hidden; }
+
+    /* scrolling content */
+    .ticker__track{
+      display:inline-block;
+      padding-left:100%;
+      animation: slide var(--speed) linear infinite;
+    }
+
+    /* individual item */
+    .ticker__item{
+      display:inline-flex; align-items:center; gap:10px;
+      color: var(--text); padding:0 28px;
+    }
+    .ticker__item small{ color: var(--muted); font-weight:500; }
+
+    /* links inside ticker */
+    .ticker__item a{
+      color:#fff; text-decoration:underline; text-underline-offset:2px;
+    }
+    .ticker__item a:hover{ text-decoration:none; }
+
+    /* pause on hover/focus for accessibility */
+    .ticker:hover .ticker__track,
+    .ticker:focus-within .ticker__track{ animation-play-state: paused; }
+
+    /* reduced motion preference */
+    @media (prefers-reduced-motion: reduce){
+      .ticker__track{ animation: none; padding-left:0; }
+    }
+
+    @keyframes slide{
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
+    /* responsive: slightly more compact on mobile */
+    @media (max-width: 680px){
+      :root{ --height: 48px; --speed: 26s; }
+      .ticker__item{ padding:0 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Add ticker-sticky class if you want it fixed at the top -->
+  <div class="ticker-wrap ticker-sticky" role="region" aria-label="Important announcements">
+    <div class="ticker" aria-live="polite">
+      <div class="ticker__badge" aria-hidden="true">
+        <span class="ticker__dot"></span>
+        <span>Breaking</span>
+      </div>
+
+      <div class="ticker__viewport">
+        <div class="ticker__track">
+
+          <!-- Your messages: add as many ticker__item blocks as needed -->
+          <span class="ticker__item">
+            🔧 <strong>System X Maintenance</strong> —
+            <small>05 Sep, 10:00 PM – 02:00 AM</small>
+          </span>
+
+          <span class="ticker__item">
+            🆕 <strong>App Y Launch</strong> — Details:
+            <a href="https://example.com/app-y" target="_blank" rel="noopener">product page</a>
+          </span>
+
+          <span class="ticker__item">
+            ⚠️ <strong>Reminder</strong> — Report Z deadline: <small>06 Sep, 05:00 PM</small>
+          </span>
+
+          <span class="ticker__item">
+            📊 <strong>Power BI Dashboard</strong> — see the latest updates:
+            <a href="https://example.com/pbi" target="_blank" rel="noopener">open</a>
+          </span>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
