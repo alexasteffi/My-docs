@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Breaking News Ticker</title>
+
+  <style>
+    :root{
+      --bg: #0b2144;           /* fundal header */
+      --accent: #7a00f5;       /* accent (linie/jonctiuni) */
+      --accent-2:#00d084;      /* accent secundar */
+      --text: #ffffff;         /* text principal */
+      --muted: #c8d2e3;        /* text secundar */
+      --height: 56px;          /* înălțime bară */
+      --speed: 22s;            /* viteză scroll (mai mic = mai rapid) */
+      --shadow: 0 4px 16px rgba(0,0,0,.2);
+    }
+
+    /* Opțional: face bannerul să stea lipit sus */
+    .ticker-sticky { position: sticky; top: 0; z-index: 999; }
+
+    body{ margin:0; font-family: "Segoe UI", Roboto, Arial, sans-serif; }
+
+    .ticker-wrap{
+      background:
+        linear-gradient(90deg, rgba(122,0,245,.15), rgba(0,208,132,.15)) , var(--bg);
+      color: var(--text);
+      box-shadow: var(--shadow);
+      border-bottom: 2px solid var(--accent);
+    }
+
+    .ticker{
+      display:flex; align-items:center; gap:16px;
+      height: var(--height);
+      overflow:hidden; white-space:nowrap;
+      padding: 0 12px;
+    }
+
+    .ticker__badge{
+      display:flex; align-items:center; gap:8px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color:#fff; padding:6px 10px; border-radius:999px;
+      font-weight:600; letter-spacing:.2px; flex:0 0 auto;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.15);
+    }
+    .ticker__dot{ width:8px; height:8px; border-radius:50%; background:#fff; box-shadow:0 0 8px #fff; }
+
+    .ticker__viewport{ position:relative; flex:1 1 auto; overflow:hidden; }
+
+    /* conținutul care rulează */
+    .ticker__track{
+      display:inline-block;
+      padding-left:100%;
+      animation: slide var(--speed) linear infinite;
+    }
+
+    /* item individual */
+    .ticker__item{
+      display:inline-flex; align-items:center; gap:10px;
+      color: var(--text); padding:0 28px;
+    }
+    .ticker__item small{ color: var(--muted); font-weight:500; }
+
+    /* linkuri în ticker */
+    .ticker__item a{
+      color:#fff; text-decoration:underline; text-underline-offset:2px;
+    }
+    .ticker__item a:hover{ text-decoration:none; }
+
+    /* pauză la hover/focus pentru accesibilitate */
+    .ticker:hover .ticker__track,
+    .ticker:focus-within .ticker__track{ animation-play-state: paused; }
+
+    /* preferință „reduce motion” */
+    @media (prefers-reduced-motion: reduce){
+      .ticker__track{ animation: none; padding-left:0; }
+    }
+
+    @keyframes slide{
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
+    /* responsive: ușor mai compact pe mobil */
+    @media (max-width: 680px){
+      :root{ --height: 48px; --speed: 26s; }
+      .ticker__item{ padding:0 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Adaugă clasa ticker-sticky dacă vrei să rămână „lipit” sus -->
+  <div class="ticker-wrap ticker-sticky" role="region" aria-label="Anunțuri importante">
+    <div class="ticker" aria-live="polite">
+      <div class="ticker__badge" aria-hidden="true">
+        <span class="ticker__dot"></span>
+        <span>Breaking</span>
+      </div>
+
+      <div class="ticker__viewport">
+        <div class="ticker__track">
+
+          <!-- Mesajele tale: separă-le cu | sau lasă-le ca iteme distincte -->
+          <span class="ticker__item">
+            🔧 <strong>Mentenață System X</strong> —
+            <small>05 Sep, 22:00–02:00</small>
+          </span>
+
+          <span class="ticker__item">
+            🆕 <strong>Lansare App Y</strong> — Detalii:
+            <a href="https://example.com/app-y" target="_blank" rel="noopener">pagina produsului</a>
+          </span>
+
+          <span class="ticker__item">
+            ⚠️ <strong>Reminder</strong> — Termen raport Z: <small>06 Sep, 17:00</small>
+          </span>
+
+          <span class="ticker__item">
+            📊 <strong>Dashboard Power BI</strong> — vezi ultimele update-uri:
+            <a href="https://example.com/pbi" target="_blank" rel="noopener">deschide</a>
+          </span>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
