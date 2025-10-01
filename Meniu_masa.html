@@ -1,0 +1,31 @@
+<div id="mensaplan"></div>
+
+<script>
+async function loadMensa() {
+  const url = "https://www.mensaplan.de/muelheim/mensa-hrw-muelheim/rss.xml";
+  try {
+    const response = await fetch(url);
+    const text = await response.text();
+
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(text, "application/xml");
+    const items = xml.querySelectorAll("item");
+
+    let html = "<h2>Mensa HRW Mülheim – Speiseplan</h2><ul>";
+    items.forEach((item, idx) => {
+      if (idx < 10) { // limitează la primele 10 intrări
+        const title = item.querySelector("title").textContent;
+        const desc = item.querySelector("description").textContent;
+        html += <li><strong>${title}</strong><br>${desc}</li>;
+      }
+    });
+    html += "</ul>";
+
+    document.getElementById("mensaplan").innerHTML = html;
+  } catch (err) {
+    document.getElementById("mensaplan").innerHTML = "Nu am putut încărca meniul.";
+    console.error(err);
+  }
+}
+loadMensa();
+</script>
